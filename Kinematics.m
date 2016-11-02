@@ -68,15 +68,26 @@ phi_0 = 0;      % initial pitch angle
 % Desired final platform location (central location and roll and pitch
 % angles)
 
-prompt = {'Central elevation (m):', 'Roll angle (deg):', 'Pitch angle (deg):'};
-dlg_title = 'Final platform location';
-num_lines = 1;
-defaultans = {'0.75', '5', '10'};
-answer = inputdlg(prompt, dlg_title, num_lines, defaultans);
+error = 1;
+while (error == 1)
+    prompt = {'Central elevation (m):', 'Roll angle (deg):', 'Pitch angle (deg):'};
+    dlg_title = 'Final platform location';
+    num_lines = 1;
+    defaultans = {'0.75', '5', '10'};
+    answer = inputdlg(prompt, dlg_title, num_lines, defaultans);
 
-z_final = str2double(char(answer(1)));
-theta = str2double(char(answer(2)))*pi/180;
-phi = str2double(char(answer(3)))*pi/180;
+    z_final = str2double(char(answer(1)));
+    theta = str2double(char(answer(2)))*pi/180;
+    phi = str2double(char(answer(3)))*pi/180;
+    
+    e1 = jack1_initial(3)+jack1_initial(1)*sin(phi)+jack1_initial(2)*sin(theta);
+    e2 = jack2_initial(3)+jack2_initial(1)*sin(phi)+jack2_initial(2)*sin(theta);
+    e3 = jack3_initial(3)+jack3_initial(1)*sin(phi)+jack3_initial(2)*sin(theta);
+    error = 0;
+    if (e1 < closed_length) || (e2 < closed_length) || (e3 < closed_length) || (e1 > limit_length) || (e2 > limit_length) || (e3 > limit_length)
+        error = 1;
+    end
+end
 
 %% Final end locations
 jack1_initial = [jack1_p z_0];
