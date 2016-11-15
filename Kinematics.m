@@ -40,7 +40,7 @@ limit_length = str2double(char(answer(2)))+str2double(char(answer(1)));
 prompt = {'X-1 (m):', 'Y-1 (m):', 'X-2 (m):', 'Y-2 (m):', 'X-3 (m):', 'Y-3 (m):'};
 dlg_title = 'Jack basis';
 num_lines = 1;
-defaultans = {'0.0733', '0', '0.1', '-0.1', '-0.1', '-0.1'};
+defaultans = {'0', '-0.01666', '0.1', '-0.1', '-0.1', '-0.1'};
 answer = inputdlg(prompt, dlg_title, num_lines, defaultans);
 
 jack1_b = [str2double(char(answer(1))) str2double(char(answer(2))) 0];
@@ -53,7 +53,7 @@ jack3_b = [str2double(char(answer(5))) str2double(char(answer(6))) 0];
 prompt = {'X-1 (m):', 'Y-1 (m):', 'X-2 (m):', 'Y-2 (m):', 'X-3 (m):', 'Y-3 (m):'};
 dlg_title = 'Jack-to-platform connections';
 num_lines = 1;
-defaultans = {'0.0733', '0', '0.1', '-0.1', '-0.1', '-0.1'};
+defaultans = {'0', '-0.01666', '0.1', '-0.1', '-0.1', '-0.1'};
 answer = inputdlg(prompt, dlg_title, num_lines, defaultans);
 
 jack1_p = [str2double(char(answer(1))) str2double(char(answer(2)))];
@@ -73,7 +73,7 @@ while (error == 1)
     prompt = {'Central elevation (m):', 'Roll angle (deg):', 'Pitch angle (deg):'};
     dlg_title = 'Final platform location';
     num_lines = 1;
-    defaultans = {'0.6', '10', '30'};
+    defaultans = {'0.6', '40', '40'};
     answer = inputdlg(prompt, dlg_title, num_lines, defaultans);
 
     z_final = str2double(char(answer(1)));
@@ -106,11 +106,53 @@ jack3_length = sqrt((jack3_final(1) - jack3_b(1))^2 + (jack3_final(2) - jack3_b(
 
 disp('Final displacements of each jack:');
 S=sprintf('Jack 1 displacement: %0.5g meters',(jack1_length - z_0));
+AZ0 = sprintf('Jack 1 initial angle w.r.t z axis: %0.5g degrees',(180/pi)*acos((jack1_initial(3) - jack1_b(3))/closed_length));
+l1 = closed_length*sin(acos((jack1_initial(3) - jack1_b(3))/closed_length));
+AX0 = sprintf('Jack 1 initial angle w.r.t x axis: %0.5g degrees',(180/pi)*acos((jack1_initial(1) - jack1_b(1))/l1));
+AY0 = sprintf('Jack 1 initial angle w.r.t y axis: %0.5g degrees',(180/pi)*acos((jack1_initial(2) - jack1_b(2))/l1));
+AZf = sprintf('Jack 1 final angle w.r.t z axis: %0.5g degrees',(180/pi)*acos((jack1_final(3) - jack1_b(3))/jack1_length));
+l2 = jack1_length*sin(acos((jack1_final(3) - jack1_b(3))/jack1_length));
+AXf = sprintf('Jack 1 final angle w.r.t x axis: %0.5g degrees',(180/pi)*acos((jack1_final(1) - jack1_b(1))/l2));
+AYf = sprintf('Jack 1 final angle w.r.t y axis: %0.5g degrees',(180/pi)*acos((jack1_final(2) - jack1_b(2))/l2));
 disp(S);
+disp(AX0);
+disp(AY0);
+disp(AZ0);
+disp(AXf);
+disp(AYf);
+disp(AZf);
 S=sprintf('Jack 2 displacement: %0.5g meters',(jack2_length - z_0));
+BZ0 = sprintf('Jack 2 initial angle w.r.t z axis: %0.5g degrees',(180/pi)*acos((jack2_initial(3) - jack2_b(3))/closed_length));
+l1 = closed_length*sin(acos((jack2_initial(3) - jack2_b(3))/closed_length));
+BX0 = sprintf('Jack 2 initial angle w.r.t x axis: %0.5g degrees',(180/pi)*acos((jack2_initial(1) - jack2_b(1))/l1));
+BY0 = sprintf('Jack 2 initial angle w.r.t y axis: %0.5g degrees',(180/pi)*acos((jack2_initial(2) - jack2_b(2))/l1));
+BZf = sprintf('Jack 2 final angle w.r.t z axis: %0.5g degrees',(180/pi)*acos((jack2_final(3) - jack2_b(3))/jack2_length));
+l2 = jack2_length*sin(acos((jack2_final(3) - jack2_b(3))/jack2_length));
+BXf = sprintf('Jack 2 final angle w.r.t x axis: %0.5g degrees',(180/pi)*acos((jack2_final(1) - jack2_b(1))/l2));
+BYf = sprintf('Jack 2 final angle w.r.t y axis: %0.5g degrees',(180/pi)*acos((jack2_final(2) - jack2_b(2))/l2));
 disp(S);
+disp(BX0);
+disp(BY0);
+disp(BZ0);
+disp(BXf);
+disp(BYf);
+disp(BZf);
 S=sprintf('Jack 3 displacement: %0.5g meters',(jack3_length - z_0));
+CZ0 = sprintf('Jack 3 initial angle w.r.t z axis: %0.5g degrees',(180/pi)*acos((jack3_initial(3) - jack3_b(3))/closed_length));
+l1 = closed_length*sin(acos((jack3_initial(3) - jack3_b(3))/closed_length));
+CX0 = sprintf('Jack 3 initial angle w.r.t x axis: %0.5g degrees',(180/pi)*acos((jack3_initial(1) - jack3_b(1))/l1));
+CY0 = sprintf('Jack 3 initial angle w.r.t y axis: %0.5g degrees',(180/pi)*acos((jack3_initial(2) - jack3_b(2))/l1));
+CZf = sprintf('Jack 3 final angle w.r.t z axis: %0.5g degrees',(180/pi)*acos((jack3_final(3) - jack3_b(3))/jack3_length));
+l2 = jack3_length*sin(acos((jack3_final(3) - jack3_b(3))/jack3_length));
+CXf = sprintf('Jack 3 final angle w.r.t x axis: %0.5g degrees',(180/pi)*acos((jack3_final(1) - jack3_b(1))/l2));
+CYf = sprintf('Jack 3 final angle w.r.t y axis: %0.5g degrees',(180/pi)*acos((jack3_final(2) - jack3_b(2))/l2));
 disp(S);
+disp(CX0);
+disp(CY0);
+disp(CZ0);
+disp(CXf);
+disp(CYf);
+disp(CZf);
 
 % Plot the movement and base
 xb = [jack1_b(1) jack2_b(1) jack3_b(1)];
